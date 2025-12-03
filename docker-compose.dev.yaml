@@ -1,0 +1,82 @@
+version: '3.8'
+
+services:
+  # Redis
+  redis:
+    image: redis:7-alpine
+    container_name: david-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    command: redis-server --appendonly yes
+    networks:
+      - david-network
+
+  # AI Server (Python)
+  ai-server:
+    build:
+      context: ./ai-server
+      dockerfile: Dockerfile
+    container_name: david-ai-server
+    ports:
+      - "8001:8000"
+    environment:
+      - AI_API_KEY=${AI_API_KEY:-}
+      - AI_MODEL=${AI_MODEL:-gpt-4}
+    volumes:
+      - ./ai-server:/app
+    networks:
+      - david-network
+    depends_on:
+      - redis
+    restart: unless-stopped
+
+  # API Gateway (Java)
+  api-gateway:
+    build:
+      context: ./api-server
+      dockerfile: Dockerfile
+    container_name: david-api-gateway
+    ports:
+      - "8000:8000"
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+      - SPRING_REDIS_HOST=redis
+      - SPRING_REDIS_PORT=6379
+      - JWT_SECRET=${JWT_SECRET:-your-secret-key-change-in-production}
+    networks:
+      - david-network
+    depends_on:
+      - redis
+      - ai-server
+    restart: unless-stopped
+
+  # Frontend (React) - 개발 모드
+  frontend:
+    build:
+      context: ./www.kimdavid.kr
+      dockerfile: Dockerfile.dev
+    container_name: david-frontend
+    ports:
+      - "3000:3000"
+    environment:
+      - VITE_API_BASE_URL=http://localhost:8000
+    volumes:
+      - ./www.kimdavid.kr:/app
+      - /app/node_modules
+      - pnpm-store:/root/.local/share/pnpm/store
+    networks:
+      - david-network
+    depends_on:
+      - api-gateway
+    restart: unless-stopped
+
+volumes:
+  redis-data:
+  pnpm-store:
+
+
+networks:
+  david-network:
+    driver: bridge

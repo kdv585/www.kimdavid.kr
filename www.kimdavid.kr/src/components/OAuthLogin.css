@@ -1,0 +1,116 @@
+.oauth-login {
+  width: 100%;
+}
+
+.oauth-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  width: 100%;
+}
+
+.oauth-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  padding: 0.875rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  color: white;
+  width: 100%;
+  position: relative;
+}
+
+.oauth-button:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.oauth-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.oauth-button.kakao {
+  background-color: #FEE500;
+  color: #000000;
+}
+
+.oauth-button.kakao:hover:not(:disabled) {
+  background-color: #FDD835;
+}
+
+.oauth-button.naver {
+  background-color: #03C75A;
+}
+
+.oauth-button.naver:hover:not(:disabled) {
+  background-color: #02B350;
+}
+
+.oauth-button.google {
+  background-color: #4285F4;
+}
+
+.oauth-button.google:hover:not(:disabled) {
+  background-color: #357AE8;
+}
+
+.oauth-icon {
+  font-size: 1.25rem;
+  font-weight: 700;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.oauth-button.naver .oauth-icon {
+  background-color: white;
+  color: #03C75A;
+  border-radius: 4px;
+  font-size: 0.875rem;
+}
+
+.oauth-button.google .oauth-icon {
+  background-color: white;
+  color: #4285F4;
+  border-radius: 4px;
+  font-size: 0.875rem;
+}
+
+.loading {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.loading::after {
+  content: '';
+  width: 16px;
+  height: 16px;
+  border: 2px solid currentColor;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 768px) {
+  .oauth-button {
+    padding: 0.75rem 1.25rem;
+    font-size: 0.9rem;
+  }
+}
+
