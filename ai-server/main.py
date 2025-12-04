@@ -16,13 +16,31 @@ def create_app() -> FastAPI:
         version="1.0.0"
     )
 
-    # CORS 설정
+    # CORS 설정 - ngrok 및 Vercel 지원
     app.add_middleware(
         CORSMiddleware,
-        allow_origins=["*"],
+        allow_origins=[
+            "https://www.kimdavid.kr",
+            "https://kimdavid.kr",
+            "https://*.vercel.app",
+            "https://*.ngrok-free.dev",
+            "http://localhost:3030",
+            "http://localhost:3000",
+            "*"  # 개발 환경용
+        ],
         allow_credentials=True,
-        allow_methods=["*"],
-        allow_headers=["*"],
+        allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
+        allow_headers=[
+            "Content-Type",
+            "Authorization",
+            "Accept",
+            "Origin",
+            "X-Requested-With",
+            "ngrok-skip-browser-warning",  # ngrok 브라우저 경고 우회
+            "*"
+        ],
+        expose_headers=["*"],
+        max_age=3600,
     )
 
     # 의존성 주입
