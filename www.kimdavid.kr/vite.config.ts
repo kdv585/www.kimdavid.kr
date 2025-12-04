@@ -13,6 +13,12 @@ export default defineConfig({
             '@': resolve(__dirname, './src'),
         },
     },
+    define: {
+        // Vercel 환경 변수를 명시적으로 주입
+        'import.meta.env.VITE_API_BASE_URL': JSON.stringify(
+            process.env.VITE_API_BASE_URL || 'https://acronychal-trena-genially.ngrok-free.dev'
+        ),
+    },
     server: {
         port: 3000,
         proxy: {
