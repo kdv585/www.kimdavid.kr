@@ -2,14 +2,13 @@ import axios from 'axios'
 import type { RecommendDateCourseRequest, RecommendDateCourseResponse } from '../types'
 import type { OAuthResponse } from '../types/auth'
 
-// 임시: ngrok URL 직접 지정 (프로덕션용)
-const API_BASE_URL = 'https://acronychal-trena-genially.ngrok-free.dev'
+// Render 배포 URL
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://date-course-ai-server.onrender.com'
 
 const apiClient = axios.create({
   baseURL: API_BASE_URL,
   headers: {
     'Content-Type': 'application/json',
-    'ngrok-skip-browser-warning': 'true',  // ngrok 브라우저 경고 우회
   },
 })
 
