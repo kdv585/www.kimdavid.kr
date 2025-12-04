@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import type { Preference } from '../types'
+import type { Preference, InterestDetail } from '../types'
 import { weatherApi } from '../services/weatherApi'
 import './RecommendationForm.css'
 
@@ -10,9 +10,21 @@ interface RecommendationFormProps {
 
 const BUDGET_OPTIONS = ['저렴', '보통', '비쌈']
 const INTEREST_OPTIONS = [
-  '카페', '디저트', '맛집', '전시회', '영화', '공원', '산책',
-  '쇼핑', '문화', '야외활동', '실내활동', '데이트', '로맨틱'
+  '카페', '맛집', '전시회', '영화', '산책', '쇼핑', '문화', '야외활동', '실내활동'
 ]
+
+// 관심사별 세부 옵션 정의
+const INTEREST_DETAILS: Record<string, string[]> = {
+  '카페': ['뷰가 예쁜', '분위기가 좋은', '디저트가 맛있는'],
+  '맛집': ['한식', '중식', '일식', '양식'],
+  '전시회': ['미술', '사진', '조각', '현대미술'],
+  '영화': ['로맨스', '액션', '코미디', '스릴러', '드라마', 'SF'],
+  '산책': ['공원', '한강', '산', '해변', '도심'],
+  '쇼핑': ['패션', '뷰티', '라이프스타일', '기념품'],
+  '문화': ['공연', '뮤지컬', '연극', '콘서트'],
+  '야외활동': ['등산', '자전거', '피크닉', '캠핑'],
+  '실내활동': ['보드게임', '방탈출', '볼링', '당구']
+}
 
 // 오늘 날짜를 YYYY-MM-DD 형식으로 반환
 const getTodayDate = (): string => {
@@ -28,11 +40,13 @@ function RecommendationForm({ onSubmit, isLoading }: RecommendationFormProps) {
     budget: '보통',
     location: '',
     interests: [],
+    interestDetails: [],
     date: getTodayDate(),
     time_of_day: '오후',
     weather: '',
   })
   const [weatherLoading, setWeatherLoading] = useState(false)
+  const [selectedInterestDetails, setSelectedInterestDetails] = useState<Record<string, string[]>>({})
 
   // 날짜나 위치가 변경되면 날씨 자동 조회
   useEffect(() => {
@@ -67,12 +81,55 @@ function RecommendationForm({ onSubmit, isLoading }: RecommendationFormProps) {
   }
 
   const toggleInterest = (interest: string) => {
-    setFormData(prev => ({
-      ...prev,
-      interests: prev.interests.includes(interest)
-        ? prev.interests.filter(i => i !== interest)
-        : [...prev.interests, interest]
-    }))
+    const isSelected = formData.interests.includes(interest)
+    
+    if (isSelected) {
+      // 관심사 제거 시 세부 옵션도 제거
+      const newDetails = { ...selectedInterestDetails }
+      delete newDetails[interest]
+      setSelectedInterestDetails(newDetails)
+      
+      setFormData(prev => ({
+        ...prev,
+        interests: prev.interests.filter(i => i !== interest),
+        interestDetails: prev.interestDetails?.filter(d => d.interest !== interest) || []
+      }))
+    } else {
+      // 관심사 추가
+      setFormData(prev => ({
+        ...prev,
+        interests: [...prev.interests, interest]
+      }))
+    }
+  }
+
+  const toggleInterestDetail = (interest: string, detail: string) => {
+    const currentDetails = selectedInterestDetails[interest] || []
+    const isSelected = currentDetails.includes(detail)
+    
+    const newDetails = {
+      ...selectedInterestDetails,
+      [interest]: isSelected
+        ? currentDetails.filter(d => d !== detail)
+        : [...currentDetails, detail]
+    }
+    
+    setSelectedInterestDetails(newDetails)
+    
+    // formData의 interestDetails 업데이트
+    setFormData(prev => {
+      const existingDetails = prev.interestDetails || []
+      const otherDetails = existingDetails.filter(d => d.interest !== interest)
+      const newInterestDetails: InterestDetail = {
+        interest,
+        details: newDetails[interest]
+      }
+      
+      return {
+        ...prev,
+        interestDetails: [...otherDetails, newInterestDetails]
+      }
+    })
   }
 
   return (
@@ -161,14 +218,31 @@ function RecommendationForm({ onSubmit, isLoading }: RecommendationFormProps) {
           <span className="label-text">🎯 관심사 (복수 선택 가능)</span>
           <div className="interest-grid">
             {INTEREST_OPTIONS.map(interest => (
-              <button
-                key={interest}
-                type="button"
-                className={`interest-chip ${formData.interests.includes(interest) ? 'active' : ''}`}
-                onClick={() => toggleInterest(interest)}
-              >
-                {interest}
-              </button>
+              <div key={interest} className="interest-item">
+                <button
+                  type="button"
+                  className={`interest-chip ${formData.interests.includes(interest) ? 'active' : ''}`}
+                  onClick={() => toggleInterest(interest)}
+                >
+                  {interest}
+                </button>
+                {formData.interests.includes(interest) && INTEREST_DETAILS[interest] && (
+                  <div className="interest-details">
+                    {INTEREST_DETAILS[interest].map(detail => (
+                      <button
+                        key={detail}
+                        type="button"
+                        className={`interest-detail-chip ${
+                          selectedInterestDetails[interest]?.includes(detail) ? 'active' : ''
+                        }`}
+                        onClick={() => toggleInterestDetail(interest, detail)}
+                      >
+                        {detail}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
             ))}
           </div>
         </label>

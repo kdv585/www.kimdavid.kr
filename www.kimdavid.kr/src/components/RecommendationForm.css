@@ -78,6 +78,12 @@
   gap: 0.75rem;
 }
 
+.interest-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
 .interest-chip {
   padding: 0.75rem 1rem;
   border: 2px solid var(--border);
@@ -97,6 +103,51 @@
 
 .interest-chip.active {
   background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+  border-color: var(--primary-color);
+  color: white;
+}
+
+.interest-details {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding: 0.75rem;
+  background: var(--background);
+  border-radius: 8px;
+  margin-top: 0.25rem;
+  animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.interest-detail-chip {
+  padding: 0.5rem 0.75rem;
+  border: 1.5px solid var(--border);
+  border-radius: 6px;
+  background: white;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 0.85rem;
+  font-weight: 400;
+  color: var(--text-primary);
+}
+
+.interest-detail-chip:hover {
+  border-color: var(--primary-color);
+  background: rgba(99, 102, 241, 0.1);
+}
+
+.interest-detail-chip.active {
+  background: var(--primary-color);
   border-color: var(--primary-color);
   color: white;
 }
