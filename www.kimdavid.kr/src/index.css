@@ -4,29 +4,292 @@
   box-sizing: border-box;
 }
 
+/* Light Theme (기본) */
 :root {
-  --primary-color: #6366f1;
-  --primary-dark: #4f46e5;
-  --secondary-color: #8b5cf6;
-  --background: #f8fafc;
-  --surface: #ffffff;
-  --text-primary: #1e293b;
-  --text-secondary: #64748b;
-  --border: #e2e8f0;
+  --primary-color: #8b6914;
+  --primary-dark: #6b4e0f;
+  --secondary-color: #a67c52;
+  --accent-color: #c9a961;
+  --background: linear-gradient(135deg, #faf8f3 0%, #f5f1e8 100%);
+  --background-alt: linear-gradient(135deg, #f7f4ed 0%, #f0ebe0 100%);
+  --surface: rgba(255, 255, 255, 0.95);
+  --surface-glass: rgba(255, 255, 255, 0.7);
+  --text-primary: #3d2817;
+  --text-secondary: #6b5d4f;
+  --text-light: #3d2817;
+  --border: rgba(139, 105, 18, 0.2);
+  --success: #10b981;
+  --error: #ef4444;
+  --warning: #d97706;
+  --shadow-sm: 0 2px 8px rgba(139, 105, 18, 0.08);
+  --shadow-md: 0 4px 16px rgba(139, 105, 18, 0.12);
+  --shadow-lg: 0 8px 32px rgba(139, 105, 18, 0.15);
+  --shadow-glow: 0 0 20px rgba(139, 105, 18, 0.15);
+}
+
+/* Dark Theme */
+[data-theme="dark"] {
+  --primary-color: #d4a574;
+  --primary-dark: #b89564;
+  --secondary-color: #c9a961;
+  --accent-color: #e5c896;
+  --background: linear-gradient(135deg, #0f0f0f 0%, #1a1a1a 100%);
+  --background-alt: linear-gradient(135deg, #151515 0%, #0f0f0f 100%);
+  --surface: rgba(20, 20, 20, 0.98);
+  --surface-glass: rgba(20, 20, 20, 0.9);
+  --text-primary: #ffffff;
+  --text-secondary: #d0d0d0;
+  --text-light: #ffffff;
+  --border: rgba(212, 165, 116, 0.4);
   --success: #10b981;
   --error: #ef4444;
   --warning: #f59e0b;
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.5);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.6);
+  --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.7);
+  --shadow-glow: 0 0 20px rgba(212, 165, 116, 0.3);
+}
+
+/* Kuromi Theme */
+[data-theme="kuromi"] {
+  --primary-color: #ff69b4;
+  --primary-dark: #ff1493;
+  --secondary-color: #9370db;
+  --accent-color: #ffb6c1;
+  --background: #000000;
+  --background-alt: #1a1a1a;
+  --surface: rgba(20, 20, 20, 0.95);
+  --surface-glass: rgba(255, 105, 180, 0.2);
+  --text-primary: #ffffff;
+  --text-secondary: #ffb6c1;
+  --text-light: #ffffff;
+  --border: rgba(255, 105, 180, 0.4);
+  --success: #10b981;
+  --error: #ef4444;
+  --warning: #ff69b4;
+  --shadow-sm: 0 2px 8px rgba(255, 105, 180, 0.3);
+  --shadow-md: 0 4px 16px rgba(255, 105, 180, 0.4);
+  --shadow-lg: 0 8px 32px rgba(255, 105, 180, 0.5);
+  --shadow-glow: 0 0 20px rgba(255, 105, 180, 0.4);
+}
+
+/* Hello Kitty Theme */
+[data-theme="hellokitty"] {
+  --primary-color: #ff69b4;
+  --primary-dark: #ff1493;
+  --secondary-color: #ffb6c1;
+  --accent-color: #ffffff;
+  --background: linear-gradient(135deg, #fff0f5 0%, #ffe4e1 100%);
+  --background-alt: linear-gradient(135deg, #ffeef8 0%, #ffe0e6 100%);
+  --surface: rgba(255, 255, 255, 0.98);
+  --surface-glass: rgba(255, 182, 193, 0.3);
+  --text-primary: #4b0082;
+  --text-secondary: #8b008b;
+  --text-light: #4b0082;
+  --border: rgba(255, 105, 180, 0.3);
+  --success: #10b981;
+  --error: #ef4444;
+  --warning: #ff69b4;
+  --shadow-sm: 0 2px 8px rgba(255, 105, 180, 0.2);
+  --shadow-md: 0 4px 16px rgba(255, 105, 180, 0.3);
+  --shadow-lg: 0 8px 32px rgba(255, 105, 180, 0.4);
+  --shadow-glow: 0 0 20px rgba(255, 105, 180, 0.3);
+}
+
+/* 한교동 Theme */
+[data-theme="hangyodong"] {
+  --primary-color: #4a90e2;
+  --primary-dark: #357abd;
+  --secondary-color: #7b68ee;
+  --accent-color: #87ceeb;
+  --background: linear-gradient(135deg, #e6f3ff 0%, #d6e9f5 100%);
+  --background-alt: linear-gradient(135deg, #f0f8ff 0%, #e0f0ff 100%);
+  --surface: rgba(255, 255, 255, 0.95);
+  --surface-glass: rgba(74, 144, 226, 0.2);
+  --text-primary: #1e3a5f;
+  --text-secondary: #4a6fa5;
+  --text-light: #1e3a5f;
+  --border: rgba(74, 144, 226, 0.3);
+  --success: #10b981;
+  --error: #ef4444;
+  --warning: #4a90e2;
+  --shadow-sm: 0 2px 8px rgba(74, 144, 226, 0.2);
+  --shadow-md: 0 4px 16px rgba(74, 144, 226, 0.3);
+  --shadow-lg: 0 8px 32px rgba(74, 144, 226, 0.4);
+  --shadow-glow: 0 0 20px rgba(74, 144, 226, 0.3);
 }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: var(--background);
+  background: var(--background);
+  background-attachment: fixed;
   color: var(--text-primary);
   line-height: 1.6;
+  position: relative;
+  overflow-x: hidden;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: 
+    radial-gradient(circle at 20% 50%, rgba(139, 105, 18, 0.06) 0%, transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(166, 124, 82, 0.05) 0%, transparent 50%),
+    radial-gradient(circle at 40% 20%, rgba(201, 169, 97, 0.04) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: 0;
+  transition: background 0.3s ease;
+}
+
+[data-theme="dark"] body::before {
+  background: 
+    radial-gradient(circle at 20% 50%, rgba(212, 165, 116, 0.08) 0%, transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(201, 169, 97, 0.06) 0%, transparent 50%),
+    radial-gradient(circle at 40% 20%, rgba(229, 200, 150, 0.05) 0%, transparent 50%);
+}
+
+/* 쿠로미 테마 - 여러 곳에 배경 이미지 배치 */
+[data-theme="kuromi"] body::before {
+  background-image: 
+    url('/쿠로미.png'),
+    url('/쿠로미.png'),
+    radial-gradient(circle at 20% 50%, rgba(255, 105, 180, 0.15) 0%, transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(147, 112, 219, 0.12) 0%, transparent 50%);
+  background-size: 300px auto, 250px auto, auto, auto;
+  background-position: 10% 20%, 90% 70%, 20% 50%, 80% 80%;
+  background-repeat: no-repeat, no-repeat, no-repeat, no-repeat;
+  opacity: 0.5;
+  filter: brightness(0.7);
+}
+
+[data-theme="kuromi"] .header::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 5%;
+  width: 150px;
+  height: 150px;
+  background-image: url('/쿠로미.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  opacity: 0.3;
+  pointer-events: none;
+  z-index: -1;
+}
+
+[data-theme="kuromi"] .recommendation-form::before {
+  background-image: url('/쿠로미.png');
+  background-size: 200px auto;
+  background-position: 95% 10%;
+  background-repeat: no-repeat;
+  opacity: 0.2;
+}
+
+[data-theme="kuromi"] .footer::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 8%;
+  width: 120px;
+  height: 120px;
+  background-image: url('/쿠로미.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  opacity: 0.25;
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* 헬로키티 테마 - 여러 곳에 배경 이미지 배치 */
+[data-theme="hellokitty"] body::before {
+  background-image: 
+    url('/헬로키티.png'),
+    url('/헬로키티.png'),
+    radial-gradient(circle at 20% 50%, rgba(255, 105, 180, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(255, 182, 193, 0.08) 0%, transparent 50%);
+  background-size: 400px auto, 350px auto, auto, auto;
+  background-position: 5% 10%, 88% 75%, 20% 50%, 80% 80%;
+  background-repeat: no-repeat, no-repeat, no-repeat, no-repeat;
+  opacity: 0.3;
+}
+
+[data-theme="hellokitty"] .header::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 3%;
+  width: 120px;
+  height: 120px;
+  background-image: url('/헬로키티.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  opacity: 0.25;
+  pointer-events: none;
+  z-index: -1;
+}
+
+[data-theme="hellokitty"] .recommendation-form::before {
+  background-image: url('/헬로키티.png');
+  background-size: 180px auto;
+  background-position: 2% 85%;
+  background-repeat: no-repeat;
+  opacity: 0.2;
+}
+
+[data-theme="hellokitty"] .footer::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  right: 5%;
+  width: 100px;
+  height: 100px;
+  background-image: url('/헬로키티.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  opacity: 0.2;
+  pointer-events: none;
+  z-index: -1;
+}
+
+[data-theme="hellokitty"] .main::before {
+  content: '';
+  position: absolute;
+  top: 20%;
+  right: 2%;
+  width: 140px;
+  height: 140px;
+  background-image: url('/헬로키티.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  opacity: 0.2;
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* 한교동 테마 - 배경 이미지 배치 */
+/* 한교동 테마 - 배경 이미지 배치 */
+[data-theme="hangyodong"] body::before {
+  background-image: 
+    url('/한교동.png'),
+    radial-gradient(circle at 20% 50%, rgba(74, 144, 226, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(135, 206, 235, 0.08) 0%, transparent 50%);
+  background-size: 350px auto, auto, auto;
+  background-position: 85% 15%, 20% 50%, 80% 80%;
+  background-repeat: no-repeat, no-repeat, no-repeat;
+  opacity: 0.3;
 }
 
 code {
@@ -36,5 +299,7 @@ code {
 
 #root {
   min-height: 100vh;
+  position: relative;
+  z-index: 1;
 }
 

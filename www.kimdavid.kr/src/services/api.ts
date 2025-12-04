@@ -44,6 +44,28 @@ export const dateCourseApi = {
   },
 }
 
+// 문화 데이터 API
+export const cultureApi = {
+  getMovies: async (location: string, date: string) => {
+    const response = await apiClient.get('/api/v1/culture/movies', {
+      params: { location, date },
+    })
+    return response.data.movies || []
+  },
+  getExhibitions: async (location: string, date: string) => {
+    const response = await apiClient.get('/api/v1/culture/exhibitions', {
+      params: { location, date },
+    })
+    return response.data.exhibitions || []
+  },
+  getPerformances: async (location: string, date: string, genre?: string) => {
+    const response = await apiClient.get('/api/v1/culture/performances', {
+      params: { location, date, genre },
+    })
+    return response.data.performances || []
+  },
+}
+
 export const oauthApi = {
   getKakaoAuthUrl: async (): Promise<string> => {
     const response = await apiClient.get<{ authUrl: string }>('/api/auth/kakao')

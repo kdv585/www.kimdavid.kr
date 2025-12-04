@@ -1,10 +1,18 @@
+import { useEffect } from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Layout from './components/Layout'
 import HomePage from './pages/HomePage'
 import AuthCallback from './pages/AuthCallback'
+import { useThemeStore } from './stores/themeStore'
 import './App.css'
 
 function App() {
+  const { theme } = useThemeStore()
+
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', theme)
+  }, [theme])
+
   return (
     <BrowserRouter>
       <Layout>

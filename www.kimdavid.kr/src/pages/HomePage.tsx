@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import RecommendationForm from '../components/RecommendationForm'
 import DateCourseCard from '../components/DateCourseCard'
+import TravelScheduleTimeline from '../components/TravelScheduleTimeline'
 import { dateCourseApi } from '../services/api'
 import type { Preference, DateCourse } from '../types'
 import './HomePage.css'
@@ -9,11 +10,13 @@ function HomePage() {
   const [courses, setCourses] = useState<DateCourse[]>([])
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [currentPreference, setCurrentPreference] = useState<Preference | null>(null)
 
   const handleRecommend = async (preference: Preference) => {
     setIsLoading(true)
     setError(null)
     setCourses([])
+    setCurrentPreference(preference)
 
     try {
       const response = await dateCourseApi.recommend({ preference })
@@ -25,6 +28,9 @@ function HomePage() {
       setIsLoading(false)
     }
   }
+
+  // 여행이 선택되었는지 확인
+  const isTravelSelected = currentPreference?.interests.includes('여행') || false
 
   return (
     <div className="home-page">
@@ -44,14 +50,20 @@ function HomePage() {
 
       {courses.length > 0 && (
         <div className="results-section">
-          <h3 className="results-title">
-            추천된 데이트코스 <span className="results-count">({courses.length}개)</span>
-          </h3>
-          <div className="courses-grid">
-            {courses.map((course, index) => (
-              <DateCourseCard key={course.id || index} course={course} />
-            ))}
-          </div>
+          {isTravelSelected ? (
+            <TravelScheduleTimeline courses={courses} preference={currentPreference!} />
+          ) : (
+            <>
+              <h3 className="results-title">
+                추천된 데이트코스 <span className="results-count">({courses.length}개)</span>
+              </h3>
+              <div className="courses-grid">
+                {courses.map((course, index) => (
+                  <DateCourseCard key={course.id || index} course={course} />
+                ))}
+              </div>
+            </>
+          )}
         </div>
       )}
 

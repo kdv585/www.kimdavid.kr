@@ -21,11 +21,18 @@ class DateCourseDTO(BaseModel):
         from_attributes = True
 
 
+class InterestDetailDTO(BaseModel):
+    """관심사 세부 옵션 DTO"""
+    interest: str
+    details: List[str]
+
+
 class PreferenceDTO(BaseModel):
     """선호도 DTO"""
     budget: str = Field(description="예산: 저렴, 보통, 비쌈")
     location: str
     interests: List[str] = Field(description="관심사 태그 리스트")
+    interestDetails: Optional[List[InterestDetailDTO]] = Field(default=None, description="관심사별 세부 옵션")
     date: str = Field(description="날짜: YYYY-MM-DD 형식")
     time_of_day: str = Field(description="시간대: 아침, 점심, 오후, 저녁, 밤")
     weather: Optional[str] = None

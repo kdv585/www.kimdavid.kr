@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: date-course-ai-server
+    runtime: docker
+    plan: free
+    dockerfilePath: ./ai-server/Dockerfile
+    dockerContext: ./ai-server
+    envVars:
+      - key: AI_API_KEY
+        sync: false  # Render Dashboard에서 수동으로 설정 필요
+      - key: AI_MODEL
+        value: gpt-4
+      - key: PORT
+        value: 8000
+    healthCheckPath: /health
+    autoDeploy: true
+

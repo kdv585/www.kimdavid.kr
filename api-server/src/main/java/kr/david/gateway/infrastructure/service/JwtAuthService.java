@@ -22,7 +22,25 @@ public class JwtAuthService implements AuthService {
     private final SecretKey secretKey;
 
     public JwtAuthService(@Value("${jwt.secret:your-secret-key-change-in-production}") String secret) {
-        this.secretKey = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
+        byte[] keyBytes = secret.getBytes(StandardCharsets.UTF_8);
+        
+        // JWT는 최소 256 bits (32 bytes)가 필요합니다
+        // secret이 짧으면 SHA-256으로 해시하여 32바이트로 확장
+        if (keyBytes.length < 32) {
+            try {
+                java.security.MessageDigest digest = java.security.MessageDigest.getInstance("SHA-256");
+                keyBytes = digest.digest(keyBytes);
+            } catch (java.security.NoSuchAlgorithmException e) {
+                throw new RuntimeException("Failed to generate JWT secret key", e);
+            }
+        } else if (keyBytes.length > 64) {
+            // 64바이트를 초과하면 처음 64바이트만 사용
+            byte[] truncated = new byte[64];
+            System.arraycopy(keyBytes, 0, truncated, 0, 64);
+            keyBytes = truncated;
+        }
+        
+        this.secretKey = Keys.hmacShaKeyFor(keyBytes);
     }
 
     @Override

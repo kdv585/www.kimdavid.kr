@@ -6,6 +6,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.dependencies import get_recommend_date_course_use_case
 from app.presentation.routes.date_course_routes import create_date_course_routes
+from app.presentation.controllers.culture_controller import CultureController
 
 
 def create_app() -> FastAPI:
@@ -49,6 +50,10 @@ def create_app() -> FastAPI:
     # 라우트 등록
     date_course_router = create_date_course_routes(recommend_use_case)
     app.include_router(date_course_router)
+    
+    # 문화 데이터 라우트 등록
+    culture_controller = CultureController()
+    app.include_router(culture_controller.router)
 
     @app.get("/")
     async def root():

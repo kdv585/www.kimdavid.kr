@@ -1,11 +1,9 @@
 import { useState } from 'react'
-import { useAuthStore } from '../stores/authStore'
 import { oauthApi } from '../services/api'
 import './OAuthLogin.css'
 
 function OAuthLogin() {
   const [isLoading, setIsLoading] = useState<string | null>(null)
-  const { login } = useAuthStore()
 
   const handleOAuthLogin = async (provider: 'kakao' | 'naver' | 'google') => {
     try {

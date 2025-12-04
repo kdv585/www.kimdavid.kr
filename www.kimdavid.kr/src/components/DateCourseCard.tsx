@@ -32,6 +32,11 @@ function DateCourseCard({ course }: DateCourseCardProps) {
 
   return (
     <div className="date-course-card">
+      <div className="card-location-highlight">
+        <span className="location-icon">📍</span>
+        <span className="location-text">{course.location}</span>
+      </div>
+      
       <div className="card-header">
         <h3 className="card-title">{course.title}</h3>
         <div className="card-rating">
@@ -43,10 +48,6 @@ function DateCourseCard({ course }: DateCourseCardProps) {
       <p className="card-description">{course.description}</p>
       
       <div className="card-info">
-        <div className="info-item">
-          <span className="info-label">📍 위치</span>
-          <span className="info-value">{course.location}</span>
-        </div>
         <div className="info-item">
           <span className="info-label">⏱️ 소요시간</span>
           <span className="info-value">{formatDuration(course.duration)}</span>

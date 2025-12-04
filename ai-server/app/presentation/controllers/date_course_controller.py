@@ -30,13 +30,22 @@ def date_course_entity_to_dto(entity: DateCourse) -> DateCourseDTO:
 
 def preference_dto_to_value_object(dto: PreferenceDTO) -> Preference:
     """DTO를 값 객체로 변환"""
+    # interestDetails를 딕셔너리로 변환
+    interest_details = None
+    if dto.interestDetails:
+        interest_details = {
+            detail.interest: detail.details
+            for detail in dto.interestDetails
+        }
+    
     return Preference(
         budget=dto.budget,
-        duration=dto.duration,
         location=dto.location,
         interests=dto.interests,
-        weather=dto.weather,
-        time_of_day=dto.time_of_day
+        date=dto.date,
+        time_of_day=dto.time_of_day,
+        interest_details=interest_details,
+        weather=dto.weather
     )
 
 

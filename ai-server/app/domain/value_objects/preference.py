@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import List, Optional
+from typing import List, Optional, Dict
 
 
 @dataclass(frozen=True)
@@ -10,6 +10,7 @@ class Preference:
     interests: List[str]  # 관심사 태그
     date: str  # YYYY-MM-DD 형식
     time_of_day: str  # "아침", "점심", "오후", "저녁", "밤"
+    interest_details: Optional[Dict[str, List[str]]] = None  # 관심사별 세부 옵션 {interest: [details]}
     weather: Optional[str] = None  # "맑음", "비", "눈" 등 (날짜 선택 시 자동 설정)
 
     def __post_init__(self):
