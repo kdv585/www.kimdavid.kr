@@ -18,22 +18,30 @@ public class LoggingFilter implements GlobalFilter, Ordered {
         ServerHttpRequest request = exchange.getRequest();
         long startTime = System.currentTimeMillis();
 
-        log.info("Request: {} {} - IP: {}", 
-                request.getMethod(), 
+        log.info("Request: {} {} - IP: {}",
+                request.getMethod(),
                 request.getURI().getPath(),
                 request.getRemoteAddress());
 
         return chain.filter(exchange).then(Mono.fromRunnable(() -> {
             ServerHttpResponse response = exchange.getResponse();
             long duration = System.currentTimeMillis() - startTime;
-            
+
             log.info("Response: {} {} - Status: {} - Time: {}ms",
                     request.getMethod(),
                     request.getURI().getPath(),
                     response.getStatusCode(),
                     duration);
 
-            response.getHeaders().add("X-Process-Time", String.valueOf(duration));
+            // 응답이 커밋되기 전에만 헤더 추가 가능
+            if (!response.isCommitted()) {
+                try {
+                    response.getHeaders().add("X-Process-Time", String.valueOf(duration));
+                } catch (UnsupportedOperationException e) {
+                    // 읽기 전용 헤더인 경우 무시
+                    log.debug("Cannot add header to committed response: {}", e.getMessage());
+                }
+            }
         }));
     }
 
@@ -42,4 +50,3 @@ public class LoggingFilter implements GlobalFilter, Ordered {
         return -50;
     }
 }
-

@@ -1,5 +1,5 @@
 server:
-  port: 8000
+  port: ${SERVER_PORT:8080}
 
 spring:
   application:
@@ -40,13 +40,90 @@ spring:
             - Path=/health
           filters:
             - StripPrefix=0
+        # ML Service 라우팅 (포트 9003)
+        - id: titanic-service
+          uri: http://ml-service:9003
+          predicates:
+            - Path=/titanic/**
+          filters:
+            - StripPrefix=0
+            # Rate Limiter 제외 (개발 환경)
+        - id: ml-service-seoul-crime
+          uri: http://ml-service:9003
+          predicates:
+            - Path=/api/ml_service/seoul_crime/**
+          filters:
+            - name: RewritePath
+              args:
+                regexp: /api/ml_service/seoul_crime/(?<segment>.*)
+                replacement: /seoul_crime/${segment}
+            # Rate Limiter 제외 (개발 환경)
+        - id: ml-service-preprocess
+          uri: http://ml-service:9003
+          predicates:
+            - Path=/api/ml_service/preprocess
+          filters:
+            - name: RewritePath
+              args:
+                regexp: /api/ml_service/preprocess
+                replacement: /seoul_crime/preprocess
+            # Rate Limiter 제외 (개발 환경)
+        - id: ml-service-static
+          uri: http://ml-service:9003
+          predicates:
+            - Path=/static/**
+          filters:
+            - StripPrefix=0
+            # Rate Limiter 제외 (개발 환경)
+        - id: seoul-crime-service-direct
+          uri: http://ml-service:9003
+          predicates:
+            - Path=/seoul_crime/**
+          filters:
+            - StripPrefix=0
+            # Rate Limiter 제외 (개발 환경)
+        - id: ml-service-general
+          uri: http://ml-service:9003
+          predicates:
+            - Path=/api/ml_service/**
+          filters:
+            - StripPrefix=1
+            # Rate Limiter 제외 (개발 환경)
+        # US Unemployment Service 라우팅
+        - id: us-unemployment-service
+          uri: http://ml-service:9003
+          predicates:
+            - Path=/api/ml/usa/**
+          filters:
+            - StripPrefix=0
+            # Rate Limiter 제외 (개발 환경)
+        # NLP Service 라우팅
+        - id: nlp-service
+          uri: http://ml-service:9003
+          predicates:
+            - Path=/api/ml/nlp/**
+          filters:
+            - StripPrefix=0
+            # Rate Limiter 제외 (개발 환경)
+        # NLP Service 라우팅 (대체 경로)
+        - id: nlp-service-alt
+          uri: http://ml-service:9003
+          predicates:
+            - Path=/api/ml_service/app/nlp/**
+          filters:
+            - name: RewritePath
+              args:
+                regexp: /api/ml_service/app/nlp/(?<segment>.*)
+                replacement: /api/ml/nlp/${segment}
+            # Rate Limiter 제외 (개발 환경)
         # OAuth 라우팅은 Gateway Controller에서 직접 처리되므로 별도 라우팅 불필요
-      default-filters:
-        - name: RequestRateLimiter
-          args:
-            redis-rate-limiter.replenishRate: 10
-            redis-rate-limiter.burstCapacity: 20
-            redis-rate-limiter.requestedTokens: 1
+      # default-filters 주석 처리 (개발 환경에서 Rate Limiter 비활성화)
+      # default-filters:
+      #   - name: RequestRateLimiter
+      #     args:
+      #       redis-rate-limiter.replenishRate: 10
+      #       redis-rate-limiter.burstCapacity: 20
+      #       redis-rate-limiter.requestedTokens: 1
   redis:
     host: ${REDIS_HOST:${SPRING_REDIS_HOST:localhost}}
     port: ${REDIS_PORT:${SPRING_REDIS_PORT:6379}}

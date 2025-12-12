@@ -1,4 +1,4 @@
-FROM maven:3.9-eclipse-temurin-17 AS build
+FROM maven:3.9-eclipse-temurin-21 AS build
 
 WORKDIR /app
 
@@ -11,7 +11,7 @@ COPY src ./src
 RUN mvn clean package -DskipTests
 
 # 실행 이미지
-FROM eclipse-temurin:17-jre-alpine
+FROM eclipse-temurin:21-jre-alpine
 
 WORKDIR /app
 
@@ -19,8 +19,8 @@ WORKDIR /app
 COPY --from=build /app/target/*.jar app.jar
 
 # 포트 노출
-EXPOSE 8000
+EXPOSE 8080
 
-# 애플리케이션 실행
-ENTRYPOINT ["java", "-jar", "app.jar"]
+# 애플리케이션 실행 (포트 8080으로 명시적 설정)
+ENTRYPOINT ["java", "-jar", "app.jar", "--server.port=8080"]
 
