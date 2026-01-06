@@ -1,0 +1,12 @@
+.rag-page {
+  min-height: calc(100vh - 200px);
+  padding: 20px;
+  background: var(--bg-color);
+}
+
+.rag-page-container {
+  max-width: 1000px;
+  margin: 0 auto;
+  height: calc(100vh - 240px);
+  min-height: 600px;
+}

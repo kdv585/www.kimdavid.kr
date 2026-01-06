@@ -14,9 +14,9 @@ export default defineConfig({
         },
     },
     define: {
-        // Vercel 환경 변수를 명시적으로 주입
+        // 로컬 개발 환경에서는 빈 문자열 (프록시 사용), 프로덕션에서는 환경 변수 사용
         'import.meta.env.VITE_API_BASE_URL': JSON.stringify(
-            process.env.VITE_API_BASE_URL || 'https://acronychal-trena-genially.ngrok-free.dev'
+            process.env.VITE_API_BASE_URL || (process.env.NODE_ENV === 'development' ? '' : 'https://date-course-ai-server.onrender.com')
         ),
     },
     server: {

@@ -2,8 +2,10 @@ import axios from 'axios'
 import type { RecommendDateCourseRequest, RecommendDateCourseResponse } from '../types'
 import type { OAuthResponse } from '../types/auth'
 
-// Render 배포 URL
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://date-course-ai-server.onrender.com'
+// 로컬 개발 환경에서는 프록시 사용 (vite.config.ts의 proxy 설정 활용)
+// 프로덕션에서는 환경 변수 또는 Render URL 사용
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ||
+  (import.meta.env.DEV ? '' : 'https://date-course-ai-server.onrender.com')
 
 const apiClient = axios.create({
   baseURL: API_BASE_URL,
@@ -84,6 +86,20 @@ export const oauthApi = {
       `/api/auth/${provider}/callback`,
       { params: { code } }
     )
+    return response.data
+  },
+}
+
+// RAG API
+export const ragApi = {
+  query: async (question: string) => {
+    const response = await apiClient.post('/api/v1/rag/query', {
+      question,
+    })
+    return response.data
+  },
+  health: async () => {
+    const response = await apiClient.get('/api/v1/rag/health')
     return response.data
   },
 }
